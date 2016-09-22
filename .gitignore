@@ -1,0 +1,18 @@
+# build files
+build/
+
+# git files
+.git/
+
+# gradle files
+.gradle/
+
+# IntelliJ IDEA files
+.idea/
+
+# visual-studio-code settings
+.vscode/
+
+# misc
+*.iml
+

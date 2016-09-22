@@ -39,23 +39,72 @@ public class Converter {
     
     @SuppressWarnings("unchecked")
     public static String csvToJson(String csvString) {
-        return "";
+        CSVParser parser = new CSVParser();
+        BufferedReader reader = new BufferedReader(new StringReader(csvString));
+        JSONObject json = new JSONObject();
+        
+        JSONArray colHeaders = new JSONArray();
+        colHeaders.add("Total");
+        colHeaders.add("Assignment 1");
+        colHeaders.add("Assignment 2");
+        colHeaders.add("Exam 1");
+        json.put("colHeaders", colHeaders);
+
+        JSONArray rowHeaders = new JSONArray();
+        json.put("rowHeaders", rowHeaders);
+
+        JSONArray data = new JSONArray();
+        json.put("data", data);
+        
+        try {
+            String line = reader.readLine();
+            while ((line = reader.readLine()) != null) {
+                String[] entry = parser.parseLine(line);
+                rowHeaders.add(entry[0]);
+                JSONArray row = new JSONArray();
+                row.add(new Integer(entry[1]));
+                row.add(new Integer(entry[2]));
+                row.add(new Integer(entry[3]));
+                row.add(new Integer(entry[4]));
+                data.add(row);
+            }
+        } catch(IOException e) {
+            e.printStackTrace();
+          }
+        return json.toString();
     }
-    
+
     public static String jsonToCsv(String jsonString) {
-        return "";
+        JSONObject json = null;
+
+        try {
+            JSONParser parser = new JSONParser();
+            json = (JSONObject) parser.parse(jsonString);
+        } catch (Exception e) {
+            e.printStackTrace();
+          }
+        
+        String csv = "\"ID\"," + Converter.<String>joinArrays((JSONArray) json.get("colHeaders")) + "\n";
+        
+        JSONArray headers = (JSONArray) json.get("rowHeaders");
+        JSONArray data = (JSONArray) json.get("data");
+
+        for (int i = 0, length = headers.size(); i < length; i++) {
+            csv += ("\""+ (String) headers.get(i) + "\"," +
+            Converter.<Integer>joinArrays((JSONArray) data.get(i)) + "\n");
+        }
+        return csv;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> String joinArrays(JSONArray array) {
+        String out = "";
+        for (int i = 0, length = array.size(); i < length; i++) {
+            out += "\"" + ((T) array.get(i)) + "\"";
+            if (i < length - 1) {
+                out += ",";
+            }
+        }
+        return out;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
