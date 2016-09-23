@@ -38,7 +38,7 @@ public class ConverterTest {
     @Test
     public void testConvertCSVtoJSON() {
         // You should test using the files in src/test/resources.
-        assertTrue(JSONCompare.jsonStringsAreEqual(Converter.csvToJson(csvString), jsonString));
+        assertTrue(Converter.jsonStringsAreEqual(Converter.csvToJson(csvString), jsonString));
     }
 
     @Test
