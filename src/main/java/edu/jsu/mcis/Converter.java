@@ -90,17 +90,17 @@ public class Converter {
         JSONArray data = (JSONArray) json.get("data");
 
         for (int i = 0, length = headers.size(); i < length; i++) {
-            csv += ("\""+ (String) headers.get(i) + "\"," +
+            csv += ("\"" + (String) headers.get(i) + "\"," +
             Converter.<Integer>joinArrays((JSONArray) data.get(i)) + "\n");
         }
         return csv;
     }
 
     @SuppressWarnings("unchecked")
-    private static <T> String joinArrays(JSONArray array) {
+    private static String joinArrays(JSONArray array) {
         String out = "";
         for (int i = 0, length = array.size(); i < length; i++) {
-            out += "\"" + ((T) array.get(i)) + "\"";
+            out += "\"" + (array.get(i)) + "\"";
             if (i < length - 1) {
                 out += ",";
             }
